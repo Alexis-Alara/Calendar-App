@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 
 import Swal from "sweetalert2"
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -10,7 +10,7 @@ import { addHours, differenceInSeconds } from 'date-fns/esm'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 
-import { useUiStore } from "../../hooks"
+import { useUiStore, useCalendarStore } from "../../hooks"
 
 
 const customStyles = {
@@ -29,12 +29,13 @@ Modal.setAppElement('#root');
 export const CalendarModal = () => {
 
   const { isDateModalOpen, closeDateModal } = useUiStore()
+  const { activeEvent } = useCalendarStore()
 
   const [formSubmited, setFormSubmited] = useState(false)
 
   const [formValues, setFormValues] = useState({
-    title: 'Alex',
-    notes: 'LOREM IPSUM',
+    title: '',
+    notes: '',
     start: new Date(),
     end: addHours( new Date(), 2 )
   })
@@ -45,6 +46,14 @@ export const CalendarModal = () => {
         ? ''
         : 'is-invalid'
   },[ formValues.title, formSubmited ])
+
+  useEffect(() => {
+    if( activeEvent !== null ){
+        setFormValues({ ...activeEvent })
+    }
+
+  }, [activeEvent])
+  
 
 
   const onDateChange = ( event, changing ) => {
