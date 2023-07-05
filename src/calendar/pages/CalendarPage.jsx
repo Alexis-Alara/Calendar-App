@@ -6,6 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { addHours } from 'date-fns/esm'
 import { Navbar, CalendarEvent, CalendarModal } from "../"
 import { localizer, getMessages } from '../../helpers'
+import { useUiStore } from '../../hooks'
 
 const events = [{
   title: 'Cumpleaños de James Cameron',
@@ -20,6 +21,8 @@ const events = [{
 }]
 
 export const CalendarPage = () => {
+
+  const { openDateModal } = useUiStore()
 
   const [lastView, setlastView] = useState(localStorage.getItem('lastView') || 'week')
 
@@ -37,12 +40,12 @@ export const CalendarPage = () => {
     }
   }
 
-  const onDoubleClick = ( event ) => {
-    console.log({ doubleClick: event })
+  const onDoubleClick = () => {
+    openDateModal()
   }
   
-  const onSelect = ( event ) => {
-    console.log({ click: event })
+  const onSelect = () => {
+    
   }
   
   const onViewChanged = ( event ) => {
